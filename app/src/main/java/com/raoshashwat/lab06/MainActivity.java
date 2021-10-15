@@ -6,16 +6,22 @@ import androidx.constraintlayout.helper.widget.Carousel;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
+
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity
 {
     ViewPager2 pager;
+    //ViewPager.OnPageChangeListener pageChangeListener;
     RecyclerView.Adapter fragStateAdapter;
-    int NUM_ITEMS = 6;
+    MediaPlayer mp;
+    int NUM_ITEMS = 8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -25,6 +31,29 @@ public class MainActivity extends AppCompatActivity
         pager = findViewById(R.id.container);
         fragStateAdapter = new FragStateAdapter(this);
         pager.setAdapter(fragStateAdapter);
+        mp = MediaPlayer.create(this, R.raw.swoosh);
+        pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback()
+        {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels)
+            {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                mp.start();
+                System.out.println("sound");
+            }
+
+            @Override
+            public void onPageSelected(int position)
+            {
+                super.onPageSelected(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state)
+            {
+                super.onPageScrollStateChanged(state);
+            }
+        });
     }
 
     private class FragStateAdapter extends FragmentStateAdapter

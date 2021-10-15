@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -18,6 +20,8 @@ public class MainFragmenet extends Fragment
 {
     ViewPager2 pager;
     int pos;
+    ImageView imageDisplay;
+    String[] planets;
 
     public static Fragment newInstance(ViewPager2 pager, int pos)
     {
@@ -40,9 +44,15 @@ public class MainFragmenet extends Fragment
         super.onViewCreated(view, savedInstanceState);
 
         TabLayout tabLayout = getActivity().findViewById(R.id.tab_layout);
-        new TabLayoutMediator(tabLayout, pager, (tab, pos) -> tab.setText("I am " + (pos + 1))).attach();
+        new TabLayoutMediator(tabLayout, pager, (tab, pos) -> tab.setText("" + (pos + 1))).attach();
+
+        planets = getResources().getStringArray(R.array.planets);
 
         Button button = view.findViewById(R.id.pressme);
-        button.setText("Press " + (pos + 1));
+        button.setText(planets[pos].toUpperCase());
+
+        int resId = getResources().getIdentifier(planets[pos], "drawable", getActivity().getPackageName());
+        imageDisplay = view.findViewById(R.id.image_display);
+        imageDisplay.setImageResource(resId);
     }
 }
